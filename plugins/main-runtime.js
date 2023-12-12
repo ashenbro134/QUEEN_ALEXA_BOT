@@ -1,0 +1,32 @@
+
+let handler = async (m, { conn, args, usedPrefix, command }) => {
+	
+	let _muptime
+    if (process.send) {
+      process.send('uptime')
+      _muptime = await new Promise(resolve => {
+        process.once('message', resolve)
+        setTimeout(resolve, 1000)
+      }) * 1000
+    }
+    let muptime = clockString(_muptime)
+   m.reply(`┍━━━━━━━━━━━━━━━━━━ •
+│*💝𝗤𝗨𝜩𝜩𝗡│𝜟𝗟𝗘𝗫𝗔│𝗠𝗗💝*
+│🦋 *Bot active time
+│ \n\n${muptime}
+│ 
+┗━━━━━━━━━━━━━━━━━━ •
+   `) 
+}
+handler.help = ['runtime']
+handler.tags = ['main']
+handler.command = ['runtime', 'uptime']
+export default handler
+
+function clockString(ms) {
+  let d = isNaN(ms) ? '--' : Math.floor(ms / 86400000)
+  let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000) % 24
+  let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
+  let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
+  return [d, '𝘋 ', h, '𝘏 ', m, '𝘔 ', s, '𝘚 '].map(v => v.toString().padStart(2, 0)).join('')
+}
